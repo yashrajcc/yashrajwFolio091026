@@ -184,15 +184,13 @@ export interface CaseStudy {
    * e.g. Jan 2024 – Dec 2025
    */
   dates?: string | null;
+  /**
+   * Short teaser for cards and the work index.
+   */
   summary: string;
-  cover?: (number | null) | Media;
-  tags?:
-    | {
-        tag: string;
-        id?: string | null;
-      }[]
-    | null;
-  featured?: boolean | null;
+  /**
+   * Full case study narrative — headings, paragraphs, lists. This is the long-form project text shown on /work/[slug].
+   */
   body: {
     root: {
       type: string;
@@ -208,6 +206,14 @@ export interface CaseStudy {
     };
     [k: string]: unknown;
   };
+  cover?: (number | null) | Media;
+  tags?:
+    | {
+        tag: string;
+        id?: string | null;
+      }[]
+    | null;
+  featured?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -362,6 +368,7 @@ export interface CaseStudiesSelect<T extends boolean = true> {
   company?: T;
   dates?: T;
   summary?: T;
+  body?: T;
   cover?: T;
   tags?:
     | T
@@ -370,7 +377,6 @@ export interface CaseStudiesSelect<T extends boolean = true> {
         id?: T;
       };
   featured?: T;
-  body?: T;
   updatedAt?: T;
   createdAt?: T;
 }

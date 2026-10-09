@@ -1,6 +1,6 @@
 import type { Payload } from 'payload'
 
-import { lexicalFromBlocks } from './lib/lexical'
+import { lampBody, matBody } from './lib/caseStudyBodies'
 
 const ADMIN_EMAIL = 'hello@yashraj.cc'
 const ADMIN_PASSWORD = 'ChangeMeLocal1!'
@@ -52,32 +52,7 @@ export async function seed(payload: Payload): Promise<void> {
         'How I built a 0→1 product as the first designer on the platform—from early discovery through a design partner cohort, an MVP, and a strategy for productizing complex migration tooling.',
       featured: true,
       tags: [{ tag: 'Cloud migration' }, { tag: '0→1' }, { tag: 'Design system' }],
-      body: lexicalFromBlocks([
-        {
-          type: 'h2',
-          text: 'What this work was about',
-        },
-        {
-          type: 'p',
-          text: 'Live Application Migration Planner (LAMP) started as a fuzzy bet on helping teams plan live application moves. I joined as the first designer on the platform and took the work from early discovery through partners, an MVP, and a productization path engineering could ship against.',
-        },
-        {
-          type: 'h2',
-          text: 'Approach',
-        },
-        {
-          type: 'p',
-          text: 'Designed the end-to-end design system (tokens → components) and shipped it with engineering. Partnered with a design partner cohort to pressure-test flows before investing in a broader rollout.',
-        },
-        {
-          type: 'h2',
-          text: 'Impact',
-        },
-        {
-          type: 'p',
-          text: 'Turned a 0→1 migration tooling idea into a coherent product story: clearer discovery, a shippable MVP surface, and a strategy for growing complex modernization workflows without losing the plot.',
-        },
-      ]),
+      body: lampBody,
     },
   })
 
@@ -93,40 +68,7 @@ export async function seed(payload: Payload): Promise<void> {
         'I inherited a fuzzy, high-complexity product picture and turned it into a clear plan we could ship—then grew the work from two journeys to six, with room for AI helpers on top.',
       featured: true,
       tags: [{ tag: 'Mainframe' }, { tag: 'Modernization' }, { tag: 'AI assist' }],
-      body: lexicalFromBlocks([
-        {
-          type: 'h2',
-          text: 'What this work was about',
-        },
-        {
-          type: 'p',
-          text: 'Mainframe Assessment Tool (MAT) was hard to explain because the real system is huge and old. My job was to cut through the noise: make the product legible for people who need to decide, not just admire diagrams.',
-        },
-        {
-          type: 'h2',
-          text: 'The barrier',
-        },
-        {
-          type: 'p',
-          text: 'Modernizing a mainframe stack is so heavy that teams stall. Without a shared picture, every meeting replays the same fears instead of moving work forward.',
-        },
-        {
-          type: 'h2',
-          text: 'Taking the program on',
-        },
-        {
-          type: 'p',
-          text: 'I stepped in when a senior staff designer left and ran design end to end—from framing to delivery. In about eight weeks that work settled into a framework we could ship: priorities, patterns, and language the whole team could reuse. Scope grew from two journeys to six: Overview, Discovery, AI insights, Settings, Reports, and Filtering.',
-        },
-        {
-          type: 'h2',
-          text: 'Impact',
-        },
-        {
-          type: 'p',
-          text: 'Teams could point at the same plan, expand the surface without losing the plot, and unblock decisions that used to drown in complexity.',
-        },
-      ]),
+      body: matBody,
     },
   })
 

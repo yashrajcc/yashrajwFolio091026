@@ -45,6 +45,19 @@ export const CaseStudies: CollectionConfig = {
       name: 'summary',
       type: 'textarea',
       required: true,
+      admin: {
+        description: 'Short teaser for cards and the work index.',
+      },
+    },
+    {
+      name: 'body',
+      type: 'richText',
+      label: 'Body',
+      required: true,
+      admin: {
+        description:
+          'Full case study narrative — headings, paragraphs, lists. This is the long-form project text shown on /work/[slug].',
+      },
     },
     {
       name: 'cover',
@@ -69,11 +82,6 @@ export const CaseStudies: CollectionConfig = {
       admin: {
         position: 'sidebar',
       },
-    },
-    {
-      name: 'body',
-      type: 'richText',
-      required: true,
     },
   ],
 }
