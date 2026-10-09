@@ -6,8 +6,7 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 
-const nextConfig: NextConfig = {
-  // @ts-expect-error Payload/Next agentRules option (disables AGENTS.md generation)
+const nextConfig = {
   agentRules: false,
   images: {
     localPatterns: [
@@ -16,7 +15,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  webpack: (webpackConfig) => {
+  webpack: (webpackConfig: { resolve: { extensionAlias?: Record<string, string[]> } }) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],
       '.js': ['.ts', '.tsx', '.js', '.jsx'],
@@ -28,6 +27,6 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(dirname),
   },
-}
+} as NextConfig
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })

@@ -12,7 +12,7 @@ type LexicalTextNode = {
 
 type LexicalElement = {
   type: string
-  format: string
+  format: ''
   indent: number
   version: 1
   children: LexicalTextNode[]
@@ -27,7 +27,7 @@ type LexicalElement = {
 export type LexicalDoc = {
   root: {
     type: 'root'
-    format: string
+    format: ''
     indent: number
     version: 1
     children: LexicalElement[]
