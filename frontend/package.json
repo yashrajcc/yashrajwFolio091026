@@ -1,0 +1,29 @@
+{
+  "name": "frontend",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1 --port 4327",
+    "build": "next build",
+    "start": "next start --hostname 127.0.0.1 --port 4327",
+    "lint": "eslint .",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@sanity/client": "^7.22.1",
+    "@sanity/image-url": "^2.1.1",
+    "@tailwindcss/postcss": "^4.3.0",
+    "next": "^16.2.7",
+    "next-sanity": "^13.0.8",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.19",
+    "@types/react": "^19.2.16",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.7",
+    "typescript": "^5.9.3"
+  }
+}
