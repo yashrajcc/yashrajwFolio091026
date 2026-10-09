@@ -33,10 +33,9 @@ export async function seed(payload: Payload): Promise<void> {
     data: {
       siteName: 'Yashraj Wadalkar',
       tagline:
-        'Building the future of cloud infrastructure and developer experiences.',
+        '`${"Product Designer"} turned self-taught ${"UX Engineer"}`',
       contactEmail: 'hello@yashraj.cc',
-      about:
-        'UX designer & tinkerer at large @ Google — shaping how builders think, navigate complex systems, and stay productive.',
+      about: 'Building Systems across\ncomplex\nsocio-technical spaces',
     },
   })
 

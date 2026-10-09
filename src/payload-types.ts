@@ -439,9 +439,18 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Setting {
   id: number;
+  /**
+   * Full site name. Homepage hero uses the first word as the display name.
+   */
   siteName: string;
+  /**
+   * Homepage hero role line (mono / template-literal style).
+   */
   tagline: string;
   contactEmail: string;
+  /**
+   * Homepage hero support lines. Use line breaks for stacking.
+   */
   about?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;

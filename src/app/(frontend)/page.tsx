@@ -24,26 +24,40 @@ export default async function HomePage() {
           })
         ).docs
 
+  // Fold 01 screenshot copy — settings stay editable in /admin when they match this shape.
+  const HERO = {
+    hello: "Hello; I'm",
+    name: 'Yashraj',
+    role: '`${"Product Designer"} turned self-taught ${"UX Engineer"}`',
+    support: 'Building Systems across\ncomplex\nsocio-technical spaces',
+  } as const
+
+  const displayName =
+    (settings.siteName || HERO.name).trim().split(/\s+/)[0] || HERO.name
+  const roleLooksLikeCode =
+    typeof settings.tagline === 'string' && settings.tagline.includes('${')
+  const roleLine = roleLooksLikeCode ? settings.tagline : HERO.role
+  const aboutLooksStacked =
+    typeof settings.about === 'string' && settings.about.includes('\n')
+  const supportLines = (aboutLooksStacked ? settings.about : HERO.support)
+    .split(/\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+
   return (
     <>
-      <section className="hero">
-        <p className="hero__brand">{settings.siteName || 'Yashraj Wadalkar'}</p>
-        <h1 className="hero__headline">
-          {settings.tagline ||
-            'Building the future of cloud infrastructure and developer experiences.'}
-        </h1>
-        <p className="hero__lede">
-          {settings.about ||
-            'UX designer & tinkerer at large @ Google — clarity, trust, and speed without sacrificing depth.'}
+      <section className="hero" aria-label="Introduction">
+        <p className="hero__hello">{HERO.hello}</p>
+        <h1 className="hero__name">{displayName}</h1>
+        <p className="hero__role">{roleLine}</p>
+        <p className="hero__support">
+          {supportLines.map((line, i) => (
+            <React.Fragment key={i}>
+              {i > 0 ? <br /> : null}
+              {line}
+            </React.Fragment>
+          ))}
         </p>
-        <div className="cta-row">
-          <Link className="btn btn--primary" href="/work">
-            View work
-          </Link>
-          <a className="btn btn--ghost" href={`mailto:${settings.contactEmail || 'hello@yashraj.cc'}`}>
-            Say hello
-          </a>
-        </div>
       </section>
 
       <section className="section" aria-labelledby="featured-work">
