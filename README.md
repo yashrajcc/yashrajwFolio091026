@@ -1,12 +1,12 @@
-# Yashraj Wadalkar — portfolio (Next.js + Sanity)
+# Yashraj Wadalkar — portfolio (Next.js + Payload CMS 3)
 
-Local home for the portfolio revamp: case studies in Sanity, writings as link-outs (no custom blog, no MDX).
+Local revamp of [work.yashraj.cc](https://work.yashraj.cc): case studies edited in **`/admin`**, writings as external link-outs (Substack / Medium). No Sanity, no MDX, no blog engine.
 
 ## Stack
 
-- **Frontend:** Next.js (`frontend/`) — dev on **http://127.0.0.1:4327**
-- **CMS:** Sanity Studio (`studio/`) — dev on **http://localhost:3333**
-- **Mock fallback:** If Sanity env vars are missing, the site serves seeded mock content from `frontend/lib/mock.ts`.
+- **Next.js 16** + **Payload CMS 3** (one app: public site + admin)
+- **SQLite** locally (`payload.db` in the project root)
+- Dev server on **http://127.0.0.1:4327** (not 3000)
 
 ## Routes
 
@@ -15,13 +15,16 @@ Local home for the portfolio revamp: case studies in Sanity, writings as link-ou
 | `/` | Landing + featured case studies |
 | `/work` | Case study index |
 | `/work/[slug]` | Case study detail |
-| `/writing` | External writing links (Medium, Substack, etc.) |
+| `/writing` | External writing links |
+| `/admin` | Payload editor |
 
-## Schemas (Studio)
+## Collections & globals
 
-- `settings` (singleton)
-- `caseStudy`
-- `writingLink`
+- **Users** — admin auth
+- **Media** — uploads
+- **Case studies** — title, slug, role, dates, summary, cover, body (rich text), featured, company/tags
+- **Writing links** — title, URL, source, optional date/blurb
+- **Settings** (global) — site name, tagline, contact email, about
 
 ## Quick start (Mac)
 
@@ -31,50 +34,53 @@ npm install
 npm run dev
 ```
 
-Open **http://127.0.0.1:4327**.
+Open:
 
-Studio (after Sanity project exists):
+- Site: **http://127.0.0.1:4327**
+- Admin: **http://127.0.0.1:4327/admin**
 
-```bash
-cp studio/.env.example studio/.env
-# fill SANITY_STUDIO_PROJECT_ID
-npm run dev:studio
-```
+On first boot, `onInit` seeds:
 
-## Connect Sanity
+- Settings + 2 case studies (LAMP, Mainframe Assessment Tool) + writing links
+- Admin user if none exists:
 
-1. Create a project at [sanity.io/manage](https://www.sanity.io/manage).
-2. Copy env files:
+  - **Email:** `hello@yashraj.cc`
+  - **Password:** `ChangeMeLocal1!`
 
-   ```bash
-   cp frontend/.env.example frontend/.env.local
-   cp studio/.env.example studio/.env
-   ```
+Change that password after first login.
 
-3. Set `NEXT_PUBLIC_SANITY_PROJECT_ID` / `SANITY_STUDIO_PROJECT_ID` (same id).
-4. Create a read token (Viewer) → `SANITY_API_READ_TOKEN` in `frontend/.env.local`.
-5. Create an Editor token → `SANITY_API_WRITE_TOKEN` in `studio/.env`, then:
+If you prefer to create the first admin yourself in the browser, set `SEED_ON_INIT=false` in `.env` before the first run (then create the user at `/admin`).
 
-   ```bash
-   npm run seed
-   ```
+## Environment
 
-## Deploy (later)
-
-- **Frontend:** Vercel, root directory `frontend`, attach `work.yashraj.cc`.
-- **Studio:** `npm run deploy --workspace=studio` or Sanity hosted Studio.
-
-## Git / GitHub
-
-This folder is a git repo. No GitHub remote is configured by default.
+Copy from the example if needed:
 
 ```bash
-gh repo create yashrajwFolio091026 --private --source=. --remote=origin
-git push -u origin main
+cp .env.example .env
 ```
 
-(Use a public repo if you prefer; match your existing portfolio visibility.)
+| Variable | Purpose |
+|----------|---------|
+| `DATABASE_URL` | SQLite file URI, default `file:./payload.db` |
+| `PAYLOAD_SECRET` | Random secret for auth/encryption |
+| `SEED_ON_INIT` | `false` to skip auto-seed |
 
-## Origin temp branch note
+SQLite file path: **`./payload.db`** (project root). It is gitignored.
 
-The cloud scaffold lived on Origin temp repo branch `cursor/portfolio-revamp-82bb`. That remote requires Cursor auth from this Mac, so this checkout was rebuilt from the same plan (Sanity clean template + portfolio IA).
+Useful scripts:
+
+```bash
+npm run generate:types      # refresh src/payload-types.ts
+npm run generate:importmap  # after custom admin components
+npm run payload migrate     # when you add SQL migrations later
+```
+
+## Production notes (later)
+
+- **Host:** Vercel → `work.yashraj.cc`
+- **DB:** switch from `@payloadcms/db-sqlite` to `@payloadcms/db-postgres` (e.g. Neon). Point `DATABASE_URL` at the Neon connection string, run migrations, redeploy.
+- Keep `/admin` behind Payload auth; do not expose write tokens publicly.
+
+## Git
+
+This folder is a git repo. No GitHub remote is required for local work.
