@@ -7,6 +7,10 @@ const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
+  // Avoid auto-generating AGENTS.md/CLAUDE.md on each boot
+  experimental: {
+    // kept empty; agentRules handled below if supported
+  },
   images: {
     localPatterns: [
       {
