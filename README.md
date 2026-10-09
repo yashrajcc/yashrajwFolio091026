@@ -6,7 +6,8 @@ Local revamp of [work.yashraj.cc](https://work.yashraj.cc): case studies edited 
 
 - **Next.js 16** + **Payload CMS 3** (one app: public site + admin)
 - **SQLite** locally (`payload.db` in the project root)
-- Dev server on **http://127.0.0.1:4327** (not 3000)
+- **Neon Postgres** on Vercel (serverless)
+- Local dev on **http://127.0.0.1:4327** (not 3000)
 
 ## Routes
 
@@ -22,7 +23,7 @@ Local revamp of [work.yashraj.cc](https://work.yashraj.cc): case studies edited 
 
 - **Users** — admin auth
 - **Media** — uploads
-- **Case studies** — title, slug, role, dates, summary, cover, body (rich text), featured, company/tags
+- **Case studies** — title, slug, role, dates, summary, **body** (Lexical rich text), cover, featured, company/tags
 - **Writing links** — title, URL, source, optional date/blurb
 - **Settings** (global) — site name, tagline, contact email, about
 
@@ -30,6 +31,7 @@ Local revamp of [work.yashraj.cc](https://work.yashraj.cc): case studies edited 
 
 ```bash
 cd ~/Projects/yashrajwFolio091026
+cp .env.example .env   # if needed — keep DATABASE_URL=file:./payload.db for local
 npm install
 npm run dev
 ```
@@ -39,48 +41,48 @@ Open:
 - Site: **http://127.0.0.1:4327**
 - Admin: **http://127.0.0.1:4327/admin**
 
-On first boot, `onInit` seeds:
+On first boot, `onInit` seeds settings, 2 case studies (LAMP, MAT), writing links, and an admin user if none exists:
 
-- Settings + 2 case studies (LAMP, Mainframe Assessment Tool) + writing links
-- Admin user if none exists:
+- **Email:** `hello@yashraj.cc`
+- **Password:** `ChangeMeLocal1!`
 
-  - **Email:** `hello@yashraj.cc`
-  - **Password:** `ChangeMeLocal1!`
+Change that password after first login. Set `SEED_ON_INIT=false` to skip seeding.
 
-Change that password after first login.
-
-If you prefer to create the first admin yourself in the browser, set `SEED_ON_INIT=false` in `.env` before the first run (then create the user at `/admin`).
+> If `.env.local` was pulled from Vercel, it may override local SQLite with Neon. For day-to-day local work, prefer `.env` with `file:./payload.db` and remove/rename `.env.local`, or keep using Neon against the free DB.
 
 ## Environment
 
-Copy from the example if needed:
-
-```bash
-cp .env.example .env
-```
-
 | Variable | Purpose |
 |----------|---------|
-| `DATABASE_URL` | SQLite file URI, default `file:./payload.db` |
-| `PAYLOAD_SECRET` | Random secret for auth/encryption |
+| `DATABASE_URL` | Local: `file:./payload.db`. Production: Neon `postgresql://…` (also set as `POSTGRES_URL` by Vercel Neon) |
+| `PAYLOAD_SECRET` | Random secret for auth/encryption (required on Vercel) |
 | `SEED_ON_INIT` | `false` to skip auto-seed |
 
-SQLite file path: **`./payload.db`** (project root). It is gitignored.
+SQLite file path: **`./payload.db`** (gitignored).
 
 Useful scripts:
 
 ```bash
-npm run generate:types      # refresh src/payload-types.ts
-npm run generate:importmap  # after custom admin components
-npm run payload migrate     # when you add SQL migrations later
+npm run generate:types
+npm run generate:importmap
+npm run payload migrate   # apply SQL migrations (used on Vercel build)
+npm run seed
 ```
 
-## Production notes (later)
+## Deploy (Vercel + Neon)
 
-- **Host:** Vercel → `work.yashraj.cc`
-- **DB:** switch from `@payloadcms/db-sqlite` to `@payloadcms/db-postgres` (e.g. Neon). Point `DATABASE_URL` at the Neon connection string, run migrations, redeploy.
-- Keep `/admin` behind Payload auth; do not expose write tokens publicly.
+- **GitHub:** https://github.com/yashrajcc/yashrajwFolio091026
+- **Vercel project:** `yashrajw-folio-091026` (linked to `main` — deploys on push)
+- **DB:** Neon free tier via Vercel Marketplace (`yashrajw-folio-db`)
+- **Build:** `payload migrate && next build` (see `package.json`)
+- **No custom domain** attached in this setup (use the `*.vercel.app` URL)
+
+Production admin: open `/admin` on the Vercel URL. If the DB was seeded, use the seed credentials above and change the password immediately. If not seeded, create the first user in the browser.
+
+Media uploads on Vercel eventually need blob storage; seeded case studies work without covers.
 
 ## Git
 
-This folder is a git repo. No GitHub remote is required for local work.
+```bash
+git push -u origin main
+```

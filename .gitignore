@@ -29,6 +29,9 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+.env
+.env.local
+.env.vercel
 .env*.local
 
 # vercel
@@ -37,8 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-.env
 
 /media
 payload.db
@@ -57,3 +58,6 @@ node_modules/
 
 AGENTS.md
 CLAUDE.md
+
+.agents/
+skills-lock.json

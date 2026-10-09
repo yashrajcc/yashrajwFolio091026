@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
+    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" payload migrate && next build",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev -p 4327 -H 127.0.0.1",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev -p 4327 -H 127.0.0.1",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
@@ -20,6 +20,8 @@
     "update:bodies": "cross-env NODE_OPTIONS=--no-deprecation tsx src/scripts/update-case-bodies.ts"
   },
   "dependencies": {
+    "@payloadcms/db-sqlite": "3.90.2",
+    "@payloadcms/db-vercel-postgres": "3.90.2",
     "@payloadcms/next": "3.90.2",
     "@payloadcms/richtext-lexical": "3.90.2",
     "@payloadcms/ui": "3.90.2",
@@ -30,8 +32,7 @@
     "payload": "3.90.2",
     "react": "19.2.6",
     "react-dom": "19.2.6",
-    "sharp": "0.35.4",
-    "@payloadcms/db-sqlite": "3.90.2"
+    "sharp": "0.35.4"
   },
   "devDependencies": {
     "@playwright/test": "1.58.2",

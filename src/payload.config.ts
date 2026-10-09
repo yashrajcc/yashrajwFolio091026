@@ -1,4 +1,5 @@
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -14,6 +15,24 @@ import { seed } from './seed'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+function envUrl(...keys: string[]): string {
+  for (const key of keys) {
+    const raw = process.env[key]
+    if (!raw) continue
+    // Vercel env pull sometimes wraps values in quotes
+    return raw.trim().replace(/^['"]|['"]$/g, '')
+  }
+  return ''
+}
+
+const databaseURL = envUrl(
+  'DATABASE_URL',
+  'POSTGRES_URL',
+  'POSTGRES_PRISMA_URL',
+)
+
+const isPostgres = /^postgres(ql)?:\/\//i.test(databaseURL)
 
 export default buildConfig({
   admin: {
@@ -32,11 +51,21 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  db: sqliteAdapter({
-    client: {
-      url: process.env.DATABASE_URL || 'file:./payload.db',
-    },
-  }),
+  db: isPostgres
+    ? vercelPostgresAdapter({
+        pool: {
+          connectionString: databaseURL,
+        },
+        // Dev push against Neon when NODE_ENV !== production.
+        // Production schema changes go through `payload migrate` in the build.
+        push: process.env.NODE_ENV !== 'production',
+        migrationDir: path.resolve(dirname, 'migrations'),
+      })
+    : sqliteAdapter({
+        client: {
+          url: databaseURL || 'file:./payload.db',
+        },
+      }),
   sharp,
   plugins: [],
   onInit: async (payload) => {
