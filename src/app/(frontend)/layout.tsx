@@ -53,7 +53,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700&family=Noto+Sans+Tamil:wght@600&family=Noto+Sans+Kannada:wght@600&display=swap"
           rel="stylesheet"
         />
       </head>
@@ -61,8 +61,8 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         <div className="shell">
           <SiteHeader siteName={siteName} />
           <main>{children}</main>
-          <SiteFooter siteName={siteName} contactEmail={contactEmail} />
         </div>
+        <SiteFooter siteName={siteName} contactEmail={contactEmail} />
       </body>
     </html>
   )
