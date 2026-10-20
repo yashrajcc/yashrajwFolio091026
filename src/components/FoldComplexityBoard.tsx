@@ -15,19 +15,19 @@ const BOARDS: Array<{
   {
     id: 'care',
     title: 'Care',
-    hint: 'Pin notes, artifacts, and cases here.',
+    hint: 'Space for later.',
     tilt: '-1.4deg',
   },
   {
     id: 'scale',
     title: 'Scale',
-    hint: 'Pin systems, diagrams, and volume stories here.',
+    hint: 'Work in progress.',
     tilt: '1.1deg',
   },
   {
     id: 'contexts',
     title: 'Contexts',
-    hint: 'Pin places, fieldwork, and ground notes here.',
+    hint: 'Empty for now.',
     tilt: '-0.6deg',
   },
 ]
@@ -76,6 +76,16 @@ export function FoldComplexityBoard() {
       className={`fold-board${drawn ? ' is-drawn' : ''}${focus ? ' has-focus' : ''}`}
       data-focus={focus ?? 'none'}
     >
+
+      <img
+        className="fold-board__photo"
+        src="/brand/hero-floor-cutout.png"
+        alt=""
+        width={1795}
+        height={1061}
+        aria-hidden="true"
+      />
+
       <div className="fold-board__spiral" aria-hidden="true">
         <svg viewBox="-55 -15 190 140" preserveAspectRatio="xMidYMid slice">
           <defs>

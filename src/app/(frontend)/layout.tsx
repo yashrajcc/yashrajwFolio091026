@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { Analytics } from '@vercel/analytics/next'
+
 import { SiteFooter } from '@/components/SiteFooter'
 import { SiteHeader } from '@/components/SiteHeader'
 import { getPayloadClient } from '@/lib/payload'
@@ -63,6 +65,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
           <main>{children}</main>
         </div>
         <SiteFooter siteName={siteName} contactEmail={contactEmail} />
+        <Analytics />
       </body>
     </html>
   )
