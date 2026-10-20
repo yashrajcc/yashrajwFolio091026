@@ -131,6 +131,7 @@ export default async function HomePage() {
 
       <FoldStack />
 
+
       <FoldWritingBento
         items={writings.map((item) => ({
           id: item.id,

@@ -78,19 +78,13 @@ function splitHeadline(title: string): { lead: string; sub: string } {
   }
 }
 
-function tiltFor(index: number) {
-  // Alternate slight rest rotations: -1.6° / 1.2° / -0.9° / 1.8° …
-  const tilts = [-1.6, 1.25, -0.95, 1.75, -1.35, 1.05]
-  return tilts[index % tilts.length]
-}
-
 function hoverNudgeFor(index: number) {
-  // Hover pushes each card a different way (x, y, rotate)
+  // ~2° tilt + light skew on hover, alternating direction
   const nudges = [
-    { x: '0.55rem', y: '-0.85rem', r: '-2.8deg' },
-    { x: '-0.45rem', y: '-0.7rem', r: '2.4deg' },
-    { x: '0.7rem', y: '-0.55rem', r: '1.8deg' },
-    { x: '-0.6rem', y: '-0.9rem', r: '-2.1deg' },
+    { x: '0.35rem', y: '-1.35rem', r: '-2deg', sx: '-1.2deg', sy: '0.6deg' },
+    { x: '-0.25rem', y: '-1.45rem', r: '2deg', sx: '1.2deg', sy: '-0.6deg' },
+    { x: '0.4rem', y: '-1.25rem', r: '2deg', sx: '1deg', sy: '0.5deg' },
+    { x: '-0.3rem', y: '-1.5rem', r: '-2deg', sx: '-1deg', sy: '-0.5deg' },
   ]
   return nudges[index % nudges.length]
 }
@@ -101,7 +95,6 @@ export function CaseStudyCard({ study, index = 0 }: Props) {
   const eyebrow = [study.company, study.role].filter(Boolean).join(' / ') || 'Case study'
   const { lead, sub } = splitHeadline(study.title)
   const href = `/work/${study.slug}`
-  const tilt = tiltFor(index)
   const nudge = hoverNudgeFor(index)
 
   return (
@@ -109,10 +102,11 @@ export function CaseStudyCard({ study, index = 0 }: Props) {
       className={`case-card case-card--${variant} case-card--tone-${tone}`}
       style={{
         ['--i' as string]: String(index),
-        ['--tilt' as string]: `${tilt}deg`,
         ['--hover-x' as string]: nudge.x,
         ['--hover-y' as string]: nudge.y,
         ['--hover-r' as string]: nudge.r,
+        ['--hover-sx' as string]: nudge.sx,
+        ['--hover-sy' as string]: nudge.sy,
       }}
     >
       <div className="case-card__float">

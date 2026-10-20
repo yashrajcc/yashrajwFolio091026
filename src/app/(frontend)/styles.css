@@ -502,7 +502,10 @@ main > .case-body {
   overflow: hidden;
 }
 
+/* Central hero */
 .hero__cluster {
+  position: relative;
+  z-index: 1;
   width: min(100% - (var(--gutter) * 2), 48rem);
   margin-inline: auto;
   display: flex;
@@ -733,11 +736,13 @@ main > .case-body {
 
 /* Hero-edge marquee — L→R, pauses on hover */
 .hero__marquee {
+  position: relative;
+  z-index: 2;
   width: 100%;
   margin-top: auto;
   padding: 0.85rem 0;
   border-top: 1px solid var(--line);
-  background: rgba(246, 243, 238, 0.92);
+  background: var(--paper);
   overflow: hidden;
   cursor: default;
   user-select: none;
@@ -876,10 +881,10 @@ main > .case-body {
 .case-card-list {
   list-style: none;
   margin: 0;
-  padding: 0.75rem 0.35rem 1.25rem;
+  padding: 1.25rem 0.85rem 2rem;
   display: grid;
   gap: clamp(1.75rem, 4vw, 2.75rem);
-  overflow: hidden;
+  overflow: visible;
 }
 
 .case-card {
@@ -888,43 +893,43 @@ main > .case-body {
   --case-panel: #111;
   --case-soft: #d8d8d8;
   --case-paper: #ececec;
-  --tilt: 0deg;
-  --hover-x: 0.4rem;
-  --hover-y: -0.75rem;
+  --hover-x: 0.3rem;
+  --hover-y: -1.4rem;
   --hover-r: -2deg;
+  --hover-sx: -1.2deg;
+  --hover-sy: 0.6deg;
   display: block;
   text-decoration: none;
   color: inherit;
 }
 
 .case-card-list > li {
-  padding: 0.35rem 0.2rem;
+  padding: 0.55rem 0.35rem;
   min-width: 0;
+  overflow: visible;
 }
 
 .case-card__float {
   display: block;
   border-radius: 0.85rem;
-  transform: rotate(var(--tilt, 0deg)) translateY(0);
+  overflow: hidden; /* keep bg clipped to radius under transforms */
+  transform: translateY(0);
   transform-origin: center center;
-  will-change: transform;
-  box-shadow:
-    0 18px 40px rgba(28, 24, 22, 0.1),
-    0 2px 0 rgba(28, 24, 22, 0.04);
+  backface-visibility: hidden;
+  box-shadow: 0 16px 36px rgba(28, 24, 22, 0.1);
   animation: case-ambient 7.5s ease-in-out infinite;
   animation-delay: calc(var(--i, 0) * 0.55s);
   transition:
-    transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 280ms ease;
+    transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 320ms ease;
 }
 
 .case-card:hover .case-card__float,
 .case-card:focus-within .case-card__float {
-  transform: translate(var(--hover-x, 0.4rem), var(--hover-y, -0.75rem))
-    rotate(var(--hover-r, -2deg));
-  box-shadow:
-    0 32px 64px rgba(28, 24, 22, 0.16),
-    0 2px 0 rgba(28, 24, 22, 0.05);
+  transform: translate(var(--hover-x, 0.3rem), var(--hover-y, -1.4rem))
+    rotate(var(--hover-r, -2deg))
+    skew(var(--hover-sx, -1.2deg), var(--hover-sy, 0.6deg));
+  box-shadow: 0 28px 56px rgba(28, 24, 22, 0.18);
   animation-play-state: paused;
 }
 
@@ -1370,6 +1375,7 @@ main > .case-body {
   }
 }
 
+
 /* —— Writing fold: asymmetric bento tray (not case cards / not logo tiles) —— */
 .section--writing .section__title {
   margin-bottom: 0;
@@ -1413,7 +1419,10 @@ main > .case-body {
   text-decoration: none;
   color: inherit;
   overflow: hidden;
-  transition: background 180ms ease;
+  transition:
+    background 220ms ease,
+    transform 280ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 280ms ease;
 }
 
 .writing-bento__cell--feature {
@@ -1447,7 +1456,9 @@ main > .case-body {
 
 .writing-bento__cell:hover,
 .writing-bento__cell:focus-visible {
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.92);
+  transform: translateY(-6px);
+  box-shadow: 0 18px 36px rgba(28, 24, 22, 0.12);
 }
 
 .writing-bento__cell--feature:hover,
@@ -1455,10 +1466,12 @@ main > .case-body {
   background:
     radial-gradient(
       120% 90% at 100% 0%,
-      color-mix(in srgb, var(--primary) 22%, transparent),
+      color-mix(in srgb, var(--primary) 28%, transparent),
       transparent 55%
     ),
-    rgba(255, 255, 255, 0.88);
+    rgba(255, 255, 255, 0.94);
+  transform: translateY(-8px) scale(1.015);
+  box-shadow: 0 24px 48px rgba(28, 24, 22, 0.14);
 }
 
 .writing-bento__cell--rail:hover,
@@ -1712,10 +1725,10 @@ main > .case-body {
 @keyframes case-ambient {
   0%,
   100% {
-    transform: rotate(var(--tilt, 0deg)) translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
   }
   50% {
-    transform: rotate(var(--tilt, 0deg)) translate3d(0, -0.55rem, 0);
+    transform: translate3d(0, -0.55rem, 0);
   }
 }
 
@@ -2351,6 +2364,22 @@ main > .case-body {
   overflow: hidden;
 }
 
+.fold-board__photo {
+  position: absolute;
+  right: -6%;
+  bottom: -8%;
+  width: min(72vw, 44rem);
+  height: auto;
+  max-height: 105%;
+  object-fit: contain;
+  object-position: right bottom;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.45;
+  transform: scaleX(-1);
+}
+
 .fold-board__spiral {
   position: absolute;
   inset: -8% -6% -14% -4%;
@@ -2438,27 +2467,32 @@ main > .case-body {
 
 .fold-board__card:hover,
 .fold-board__card.is-focus {
-  transform: rotate(0deg) translateY(-4px);
-  border-color: color-mix(in srgb, var(--primary) 28%, transparent);
-  box-shadow: 0 18px 44px rgba(28, 24, 22, 0.08);
+  transform: rotate(0deg) translateY(-12px) scale(1.04);
+  border-color: color-mix(in srgb, var(--primary) 45%, transparent);
+  box-shadow:
+    0 28px 56px rgba(28, 24, 22, 0.16),
+    0 8px 18px rgba(28, 24, 22, 0.08);
   background:
     linear-gradient(
       165deg,
-      color-mix(in srgb, var(--paper) 78%, #fff),
-      color-mix(in srgb, #fff 70%, transparent)
+      color-mix(in srgb, var(--paper) 88%, #fff),
+      color-mix(in srgb, #fff 82%, transparent)
     );
 }
 
-.fold-board__card--care.is-focus {
-  border-color: color-mix(in srgb, var(--primary) 40%, transparent);
+.fold-board__card--care.is-focus,
+.fold-board__card--care:hover {
+  border-color: color-mix(in srgb, var(--primary) 55%, transparent);
 }
 
-.fold-board__card--scale.is-focus {
-  border-color: color-mix(in srgb, var(--secondary) 40%, transparent);
+.fold-board__card--scale.is-focus,
+.fold-board__card--scale:hover {
+  border-color: color-mix(in srgb, var(--secondary) 55%, transparent);
 }
 
-.fold-board__card--contexts.is-focus {
-  border-color: color-mix(in srgb, var(--tertiary) 40%, transparent);
+.fold-board__card--contexts.is-focus,
+.fold-board__card--contexts:hover {
+  border-color: color-mix(in srgb, var(--tertiary) 55%, transparent);
 }
 
 .fold-board__card-title {
@@ -2661,8 +2695,10 @@ main > .case-body {
     align-items: stretch;
   }
 
+
   .hero__cluster {
     width: 100%;
+    margin-inline: auto;
   }
 
   .hero__name {
@@ -2708,6 +2744,13 @@ main > .case-body {
     right: auto;
   }
 
+  .fold-board__photo {
+    width: min(95vw, 28rem);
+    opacity: 0.36;
+    right: -12%;
+    bottom: -6%;
+  }
+
   .fold-complexity {
     width: min(100% - (var(--gutter) * 2), var(--max));
     padding: 2.25rem 0 3.5rem;
@@ -2737,18 +2780,21 @@ main > .case-body {
   }
 
   .case-card-list {
-    padding: 0.4rem 0 1rem;
+    padding: 0.75rem 0.25rem 1.5rem;
+    overflow: visible;
   }
 
   .case-card-list > li {
-    padding: 0;
+    padding: 0.25rem 0;
+    overflow: visible;
   }
 
   .case-card {
-    --tilt: 0deg;
     --hover-x: 0;
     --hover-y: -0.35rem;
     --hover-r: 0deg;
+    --hover-sx: 0deg;
+    --hover-sy: 0deg;
   }
 
   .case-card__float {
