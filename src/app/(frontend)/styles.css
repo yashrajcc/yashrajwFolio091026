@@ -2285,7 +2285,7 @@ main > .case-body {
   width: min(100% - (var(--gutter) * 2), var(--max));
   margin: 0 auto;
   padding: clamp(3.5rem, 10vh, 6rem) 0 5.5rem;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* HTTP journey fold hidden — keep wave section styles for later */
@@ -2361,7 +2361,7 @@ main > .case-body {
 .fold-board {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .fold-board__photo {
@@ -2428,11 +2428,18 @@ main > .case-body {
   z-index: 1;
   list-style: none;
   margin: 0;
-  padding: 0;
+  /* room for rest tilt so titles aren't clipped */
+  padding: 0.85rem 0.35rem 1.25rem;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(1rem, 2.5vw, 1.75rem);
   align-items: stretch;
+  overflow: visible;
+}
+
+.fold-board__pins > li {
+  overflow: visible;
+  min-width: 0;
 }
 
 .fold-board__card {
@@ -2444,7 +2451,7 @@ main > .case-body {
   flex-direction: column;
   align-items: flex-start;
   gap: 1rem;
-  padding: 1.4rem 1.35rem 1.5rem;
+  padding: 1.65rem 1.35rem 1.5rem;
   border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
   border-radius: 0.25rem;
   background:
@@ -2457,7 +2464,9 @@ main > .case-body {
   box-shadow: 0 10px 34px rgba(28, 24, 22, 0.04);
   text-align: left;
   cursor: pointer;
-  transform: rotate(var(--tilt));
+  overflow: visible;
+  transform: none; /* flat at rest — tilt only on hover to avoid clipping */
+  transform-origin: center center;
   transition:
     transform 220ms ease,
     border-color 220ms ease,
@@ -2467,7 +2476,7 @@ main > .case-body {
 
 .fold-board__card:hover,
 .fold-board__card.is-focus {
-  transform: rotate(0deg) translateY(-12px) scale(1.04);
+  transform: rotate(var(--tilt, -2deg)) translateY(-12px) scale(1.03);
   border-color: color-mix(in srgb, var(--primary) 45%, transparent);
   box-shadow:
     0 28px 56px rgba(28, 24, 22, 0.16),
@@ -2497,12 +2506,14 @@ main > .case-body {
 
 .fold-board__card-title {
   margin: 0;
+  padding: 0.12em 0.06em 0.08em 0;
   font-family: var(--font-display);
   font-size: clamp(2.4rem, 5vw, 3.6rem);
   font-weight: 600;
   letter-spacing: -0.035em;
-  line-height: 0.95;
+  line-height: 1.08;
   color: var(--ink);
+  overflow: visible;
 }
 
 .fold-board__card--care .fold-board__card-title {
