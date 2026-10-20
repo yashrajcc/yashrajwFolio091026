@@ -16,19 +16,19 @@ const BOARDS: Array<{
     id: 'care',
     title: 'Care',
     hint: 'Space for later.',
-    tilt: '-1.4deg',
+    tilt: '-2deg',
   },
   {
     id: 'scale',
     title: 'Scale',
     hint: 'Work in progress.',
-    tilt: '1.1deg',
+    tilt: '2deg',
   },
   {
     id: 'contexts',
     title: 'Contexts',
     hint: 'Empty for now.',
-    tilt: '-0.6deg',
+    tilt: '-1.6deg',
   },
 ]
 
